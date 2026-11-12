@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>化簡分數型二元一次式｜互動式學習講義</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<style>
+  body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',system-ui,sans-serif;background:#f8fafc;color:#1e293b;font-size:19px;line-height:1.7}
+  /* 全頁字級：比 Tailwind 預設各大 3px */
+  .text-xs{font-size:15px!important;line-height:1.65!important}
+  .text-sm{font-size:17px!important;line-height:1.7!important}
+  .text-base{font-size:19px!important}
+  .text-lg{font-size:21px!important}
+  .text-xl{font-size:23px!important}
+  .text-2xl{font-size:27px!important}
+  .text-3xl{font-size:33px!important}
+  .text-4xl{font-size:39px!important}
+  @media(min-width:768px){.md\:text-4xl{font-size:39px!important}}
+  .hidden{display:none!important}
+  .katex{font-size:1.06em}
+  .katex-display{margin:.5em 0;overflow-x:auto;overflow-y:hidden}
+  button{cursor:pointer}
+  .opt-btn{padding:.65rem .9rem;text-align:left;background:#fff;border:1px solid #cbd5e1;border-radius:.5rem;font-size:17px;font-weight:400;transition:.15s}
+  .opt-btn:hover{border-color:#3b82f6;background:#eff6ff}
+  .opt-btn.ok{background:#dcfce7;border-color:#22c55e;color:#166534}
+  .opt-btn.bad{background:#fee2e2;border-color:#f87171;color:#991b1b}
+  .fb{display:none;margin-top:.6rem;padding:.6rem .8rem;border-radius:.5rem;font-size:15px}
+  .fb.show{display:block}
+  .fb.good{background:#f0fdf4;border:1px solid #86efac;color:#166534}
+  .fb.warn{background:#fef2f2;border:1px solid #fca5a5;color:#991b1b}
+  .note-ok{background:#f0fdf4;border:1px solid #86efac;color:#166534}
+  .note-info{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af}
+  .btn-main{background:#2563eb;color:#fff;font-weight:700;border-radius:.5rem;padding:.45rem .9rem;font-size:15px}
+  .btn-main:hover{background:#1d4ed8}
+  .btn-green{background:#16a34a;color:#fff;font-weight:700;border-radius:.5rem;padding:.45rem .9rem;font-size:15px}
+  .btn-green:hover{background:#15803d}
+  .btn-ghost{background:#fff;border:1px solid #cbd5e1;color:#334155;font-weight:700;border-radius:.5rem;padding:.4rem .8rem;font-size:15px}
+  .btn-ghost:hover{background:#eff6ff;border-color:#93c5fd}
+  .btn-ghost.sel{background:#2563eb;border-color:#2563eb;color:#fff}
+  .pill{border:1px solid #e2e8f0;color:#94a3b8;border-radius:999px;padding:.35rem .5rem;text-align:center;font-size:15px;font-weight:700;background:#fff;transition:.2s}
+  .pill.active{color:#047857;border-color:#6ee7b7;background:#ecfdf5}
+  .pill.done{color:#166534;border-color:#86efac;background:#f0fdf4}
+  input[type=range]{width:100%;accent-color:#2563eb}
+  .dict-card{background:#f0f9ff;border:1px solid #e0f2fe;border-radius:.75rem;padding:.9rem 1rem}
+</style>
+</head>
+<body class="p-4 md:p-8">
+<div class="max-w-4xl mx-auto">
+
+  <header class="text-center mb-5">
+    <h1 class="text-3xl md:text-4xl font-black text-slate-800 mb-1">📘 化簡分數型二元一次式</h1>
+    <p class="text-sm text-slate-500 font-bold">互動式學習講義</p>
+  </header>
+
+  <!-- 觀念小辭典 -->
+  <section class="bg-white rounded-xl shadow-sm border p-5 mb-5">
+    <h2 class="font-bold text-slate-700 mb-3">📖 觀念小辭典 <span class="text-xs text-slate-400 font-normal">（闖關時會一個一個學到，現在看不懂沒關係）</span></h2>
+    <div class="grid md:grid-cols-3 gap-3 text-sm">
+      <div class="dict-card"><b>同分母分數的加減</b><br>分母不變，分子相加減，例如 $\dfrac{2}{7}+\dfrac{3}{7}=\dfrac{5}{7}$。</div>
+      <div class="dict-card"><b>去括號</b><br>括號前是加號，括號裡每一項不變；括號前是減號，括號裡<b>每一項都要變號</b>。</div>
+      <div class="dict-card"><b>同類項</b><br>文字符號及次數均相同的項，例如 $3x$ 和 $-x$（文字符號都是 $x$，次數都是 $1$）。</div>
+    </div>
+  </section>
+
+  <!-- 固定進度列 -->
+  <div class="sticky top-0 z-30 bg-slate-50/95 backdrop-blur py-3 mb-4 border-b border-slate-200">
+    <div id="progressStatus" class="text-center text-xs font-bold text-slate-500 mb-2">目前進行：步驟 1｜分子合併</div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+      <div class="pill active" id="p1">① 分子合併</div>
+      <div class="pill" id="p2">② 去括號</div>
+      <div class="pill" id="p3">③ 完整化簡</div>
+      <div class="pill" id="p4">④ 進階：分母不同</div>
+    </div>
+  </div>
+
+  <!-- 步驟 1 -->
+  <section id="step1" class="bg-white rounded-xl shadow-md p-6 border border-emerald-200 mb-6">
+    <h2 class="font-bold text-lg text-emerald-700 mb-3">🚩 步驟 1　分母相同，分子合併成一個分數</h2>
+    <div id="links1" class="p-3 bg-slate-50 rounded-lg border text-xs mb-4 space-y-1"></div>
+    <div class="p-4 rounded-lg note-info text-sm mb-4">
+      <b>先觀察：</b>按「下一步」，看分母相同的兩個分數，怎麼變成一個分數。再切換成加號、減號，兩種的分子寫法有什麼不一樣？
+    </div>
+    <div class="bg-slate-50 p-5 rounded-xl border mb-4">
+      <h4 class="font-bold text-sm mb-1">🛠️ 動手做：加號和減號兩個示範</h4>
+      <p class="text-xs text-slate-600 mb-3">先選中間是加號還是減號，再按「下一步」。</p>
+      <div id="tool-s1"></div>
+    </div>
+    <div id="q1"></div>
+    <div id="sum1" class="hidden mt-4 p-4 rounded-lg note-ok text-sm">
+      <div class="mb-1">📌 整理一下：分子合併</div>
+      <p>分母相同的分數相加減，分母不變，把分子放在同一條分數線上。每個分子都要加括號，尤其是減號後面的那個分子，因為它是整個被減掉。</p>
+    </div>
+    <div id="done1" class="hidden mt-4"><button class="btn-main" aria-label="步驟 1 完成" onclick="completeStep(1)">步驟 1 完成</button></div>
+  </section>
+
+  <!-- 步驟 2 -->
+  <section id="step2" class="hidden bg-white rounded-xl shadow-md p-6 border border-emerald-200 mb-6">
+    <h2 class="font-bold text-lg text-emerald-700 mb-3">🚩 步驟 2　去括號：加號和減號不一樣</h2>
+    <div id="links2" class="p-3 bg-slate-50 rounded-lg border text-xs mb-4 space-y-1"></div>
+    <div class="p-4 rounded-lg note-info text-sm mb-4">
+      <b>先觀察：</b>切換加號、減號，看看去掉括號之後，第二個括號裡的每一項有什麼變化？
+    </div>
+    <div class="bg-slate-50 p-5 rounded-xl border mb-4">
+      <h4 class="font-bold text-sm mb-1">🛠️ 動手做：把分子的括號去掉</h4>
+      <p class="text-xs text-slate-600 mb-3">上面一列是去括號之前，下面一列是去括號之後，每一項上下對齊。</p>
+      <div id="tool-s2"></div>
+    </div>
+    <div id="q2"></div>
+    <div id="sum2" class="hidden mt-4 p-4 rounded-lg note-ok text-sm">
+      <div class="mb-1">📌 整理一下：去括號</div>
+      <ul class="list-disc pl-6 space-y-1">
+        <li>括號前是加號：括號裡每一項不變，直接去掉括號。</li>
+        <li>括號前是減號：括號裡每一項都要變號，再去掉括號：$-(a+b-c)=-a-b+c$。</li>
+      </ul>
+    </div>
+    <div id="done2" class="hidden mt-4"><button class="btn-main" aria-label="步驟 2 完成" onclick="completeStep(2)">步驟 2 完成</button></div>
+  </section>
+
+  <!-- 步驟 3 -->
+  <section id="step3" class="hidden bg-white rounded-xl shadow-md p-6 border border-emerald-200 mb-6">
+    <h2 class="font-bold text-lg text-emerald-700 mb-3">🚩 步驟 3　完整化簡</h2>
+    <div id="links3" class="p-3 bg-slate-50 rounded-lg border text-xs mb-4 space-y-1"></div>
+    <div id="q3"></div>
+    <div id="sum3" class="hidden mt-4 p-4 rounded-lg note-ok text-sm">
+      <div class="mb-1">📌 整理一下：化簡分數型二元一次式</div>
+      <ol class="list-decimal pl-6 space-y-1">
+        <li>分母相同，把分子放在同一條分數線上，每個分子加括號。</li>
+        <li>去括號：加號不變，減號讓括號裡每一項都變號。</li>
+        <li>合併分子裡的同類項，分母不變。</li>
+      </ol>
+    </div>
+    <div id="done3" class="hidden mt-4"><button class="btn-main" aria-label="步驟 3 完成" onclick="completeStep(3)">步驟 3 完成</button></div>
+  </section>
+
+  <!-- 步驟 4 -->
+  <section id="step4" class="hidden bg-white rounded-xl shadow-md p-6 border border-amber-300 mb-6">
+    <h2 class="font-bold text-lg text-amber-700 mb-3">⭐ 步驟 4　進階：分母不同</h2>
+    <div class="p-4 rounded-lg note-info text-sm mb-4">
+      <b>先觀察：</b>分母不同的兩個分數，不能直接把分子放在一起。按「下一步」，看看要先做什麼，才能合併；再切換加號、減號，比較分子的變化。
+    </div>
+    <div class="bg-slate-50 p-5 rounded-xl border mb-4">
+      <h4 class="font-bold text-sm mb-1">🛠️ 動手做：分母是 $2$ 和 $3$</h4>
+      <p class="text-xs text-slate-600 mb-3">先選中間是加號還是減號，再按「下一步」。</p>
+      <div id="tool-s4"></div>
+    </div>
+    <div id="q4a"></div>
+    <div id="q4bWrap" class="hidden mt-4"><div id="q4b"></div></div>
+    <div id="sum4" class="hidden mt-4 p-4 rounded-lg note-ok text-sm">
+      <div class="mb-1">📌 整理一下：分母不同的化簡</div>
+      <ol class="list-decimal pl-6 space-y-1">
+        <li>先通分：找分母的最小公倍數，分母乘幾倍，分子就乘同樣的倍數（分子要加括號）。</li>
+        <li>分母相同之後，把分子放在同一條分數線上。</li>
+        <li>去括號、合併同類項，分母不變。</li>
+      </ol>
+    </div>
+    <div id="done4" class="hidden mt-4"><button class="btn-green" aria-label="完成整題" onclick="completeStep(4)">完成整題</button></div>
+    <div id="finalMsg" class="hidden mt-4 p-4 rounded-lg note-ok text-sm font-bold">🎉 全部完成了！你已經會：分母相同時，先把分子合併並加括號、去括號時減號要變號、再合併同類項；分母不同時，先通分，再照同樣的方法化簡。</div>
+  </section>
+
+  <footer class="text-center text-xs text-slate-400 mt-8">互動式學習講義　化簡分數型二元一次式</footer>
+</div>
+
+<script>
+const R = String.raw;
+const katexConfig = {
+  delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],
+  ignoredClasses:['no-katex'], throwOnError:false, strict:'ignore'
+};
+function typeset(el){ if(window.renderMathInElement){ renderMathInElement(el || document.body, katexConfig); } }
+function $id(i){ return document.getElementById(i); }
+const BLUE = '#2563eb', ORANGE = '#ea580c', GREEN = '#16a34a', RED = '#dc2626';
+const cb = t => `\\color{${BLUE}}{${t}}`, co = t => `\\color{${ORANGE}}{${t}}`, cg = t => `\\color{${GREEN}}{${t}}`, cr = t => `\\color{${RED}}{${t}}`;
+
+/* ========== 均一連結（每個步驟只放一支影片） ========== */
+const U = 'https://www.junyiacademy.org';
+const VID = {
+  frac:['【解題】二元一次式的化簡：分數','tCa1MA43NYM','j-m7a-c04-1'],
+  par:['【觀念】用分配律去括號','kH7ajVDdepY','j-m7a-c03-1'],
+  like:['【解題】二元一次式的化簡：同類項合併','3_rWrfM2HUs','j-m7a-c04-1'],
+  anim:['【素養動畫】【觀念】二元一次式的化簡','vNyVW9JJrsQ','j-m7a-c04-1'],
+  diff:['【例題】異分母分數的加法','fLwKMcm-2cc','g05-menfs5b']
+};
+const EX = {
+  frac:['【一般】二元一次式的化簡：分數','jac-7-01-1-5e','j-m7a-c04-1'],
+  par:['【基礎】去括號規則','jac-7-01-1-3f','j-m7a-c03-1'],
+  dist:['【基礎】二元一次式的化簡：分配律','jac-7-01-1-5c','j-m7a-c04-1'],
+  like:['【基礎】二元一次式的化簡：同類項合併','jac-7-01-1-5b','j-m7a-c04-1'],
+  term:['【基礎】項、係數與同類項','jac-7-01-1-5a','j-m7a-c04-1'],
+  dadd:['【基礎】異分母分數的加法 1','menfs5ba','g05-menfs5b'],
+  dsub:['【基礎】異分母分數的減法 1','menfs5bb','g05-menfs5b']
+};
+const QUIZ = { q:['【學習單】二元一次式的化簡','jac-7-01-1-5-s1','j-m7a-c04-1'] };
+function lk(kind, key){
+  const t = (kind === 'v' ? VID : kind === 'e' ? EX : QUIZ)[key];
+  const path = kind === 'v' ? 'video' : kind === 'e' ? 'exercise' : 'sequential-quiz';
+  const pre = kind === 'v' ? '影片：' : kind === 'e' ? '練習：' : '學習單：';
+  return `<a href="${U}/${path}/${t[1]}?parent-topic-id=${t[2]}" target="_blank" rel="noopener" aria-label="${pre}${t[0]}" class="text-blue-600 underline">${t[0]}</a>`;
+}
+const STEP_LINKS = {
+  1:{label:'📚 想先複習的話（七年級　4-1 二元一次式的運算）', v:[['v','frac']], e:[['e','frac']]},
+  2:{label:'📚 想先複習的話（七年級　3-1 一元一次式的運算、4-1）', v:[['v','par']], e:[['e','par'],['e','dist']]},
+  3:{label:'📚 想先複習的話（七年級　4-1 二元一次式的運算）', v:[['v','anim']], e:[['e','frac'],['q','q']]}
+};
+function renderLinks(){
+  for(const n of [1,2,3]){   /* 步驟 4（進階）不放複習連結 */
+    const c = STEP_LINKS[n];
+    $id('links' + n).innerHTML = `<div class="font-bold">${c.label}</div>`
+      + `<div>看影片：${c.v.map(x => lk(...x)).join('、')}</div>`
+      + `<div>做練習：${c.e.map(x => lk(...x)).join('、')}</div>`;
+  }
+}
+
+/* ========== 共用：加減切換 ========== */
+function toggleBtns(id, minus){
+  return `<div class="flex flex-wrap items-center gap-2"><span class="text-xs">中間是：</span>
+    <button id="${id}-plus" class="btn-ghost${minus ? '' : ' sel'}" aria-label="示範一，中間是加號" onclick="tog('${id}',false)">＋　示範 ①</button>
+    <button id="${id}-minus" class="btn-ghost${minus ? ' sel' : ''}" aria-label="示範二，中間是減號" onclick="tog('${id}',true)">－　示範 ②</button></div>`;
+}
+const S = {s1:{minus:false, st:0}, s2:{minus:false}, s4:{minus:false, st:0}};
+const RENDER = {};
+function tog(id, minus){
+  S[id].minus = minus; if('st' in S[id]){ S[id].st = 0; }
+  $id(id + '-plus').className = 'btn-ghost' + (minus ? '' : ' sel');
+  $id(id + '-minus').className = 'btn-ghost' + (minus ? ' sel' : '');
+  RENDER[id]();
+}
+function nextStage(id, max){ if(S[id].st < max){ S[id].st++; RENDER[id](); } }
+function resetStage(id){ S[id].st = 0; RENDER[id](); }
+function ctlHTML(id, max){
+  const s = S[id].st;
+  return (s < max ? `<button class="btn-main" aria-label="下一步" onclick="nextStage('${id}',${max})">下一步</button>` : `<span class="text-xs text-slate-500">接著回答下面的問題。</span>`)
+    + `<button class="btn-ghost" aria-label="重新播放" onclick="resetStage('${id}')">重新播放</button>`;
+}
+const N1 = '3x+2y-1', N2 = '2x-5y+3';
+const opOf = m => m ? '-' : '+';
+
+/* ========== 工具 1：分子合併 ========== */
+function initS1(){
+  $id('tool-s1').innerHTML = `<div class="space-y-3">${toggleBtns('s1', S.s1.minus)}
+    <div id="s1-panel" class="p-3 rounded-lg text-xs note-info"></div>
+    <div id="s1-ctl" class="flex flex-wrap items-center gap-2"></div></div>`;
+  RENDER.s1 = renderS1; renderS1();
+}
+function renderS1(){
+  const {minus, st} = S.s1, op = opOf(minus);
+  const expr = `\\dfrac{${N1}}{4}${op}\\dfrac{${N2}}{4}`;
+  const top = `$${expr}$`;
+  const stageTxt = st === 0 ? `分母都是 $4$。按「下一步」，把分子放到同一條分數線上。` : `分母不變，兩個分子放在同一條分數線上，<b>每個分子都加上括號</b>。`;
+  const body = st === 0 ? '' : `<div class="mt-2">$$=\\dfrac{${cb(`(${N1})`)}${op}${co(`(${N2})`)}}{4}$$</div>`;
+  const p = $id('s1-panel');
+  p.innerHTML = `<div class="text-sm mb-2 pb-2 border-b border-blue-200">示範 ${minus ? '②' : '①'}：${top}</div><div class="text-sm">${stageTxt}</div>${body}`;
+  typeset(p);
+  $id('s1-ctl').innerHTML = ctlHTML('s1', 1);
+}
+
+/* ========== 工具 2：去括號（上一列去括號前，下一列去括號後，逐項對齊） ========== */
+const COLS = {open1:20, a:62, b:118, c:174, close1:210, op:246, open2:282, t1:332, t2:392, t3:452, close2:488};
+function initS2(){
+  $id('tool-s2').innerHTML = `<div class="space-y-3">${toggleBtns('s2', S.s2.minus)}
+    <div id="s2-svg" class="bg-white rounded-lg border p-2"></div>
+    <div id="s2-panel" class="p-3 rounded-lg text-xs note-info"></div></div>`;
+  RENDER.s2 = renderS2; renderS2();
+}
+function renderS2(){
+  const minus = S.s2.minus, op = minus ? '−' : '+';
+  const row1y = 104, row2y = 184;
+  const T = (x, y, t, c, fs, w) => `<text x="${x}" y="${y}" font-size="${fs || 26}" text-anchor="middle" fill="${c}" font-weight="${w || 700}">${t}</text>`;
+  const left = ['3x','+2y','−1'], right1 = ['2x','−5y','+3'];
+  const right2 = minus ? ['−2x','+5y','−3'] : ['+2x','−5y','+3'];
+  const flip = minus ? [true, true, true] : [false, false, false];
+  let s = `<defs><marker id="s2m" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="${RED}"/></marker></defs>`;
+  /* 第一列：去括號之前 */
+  s += T(COLS.open1, row1y, '(', '#334155', 30, 400) + T(COLS.a, row1y, left[0], BLUE) + T(COLS.b, row1y, left[1], BLUE) + T(COLS.c, row1y, left[2], BLUE) + T(COLS.close1, row1y, ')', '#334155', 30, 400);
+  s += T(COLS.op, row1y, op, '#334155', 30);
+  s += T(COLS.open2, row1y, '(', '#334155', 30, 400) + T(COLS.t1, row1y, right1[0], ORANGE) + T(COLS.t2, row1y, right1[1], ORANGE) + T(COLS.t3, row1y, right1[2], ORANGE) + T(COLS.close2, row1y, ')', '#334155', 30, 400);
+  /* 減號：箭頭指向第二個括號裡的每一項 */
+  if(minus){
+    [[COLS.t1, 44], [COLS.t2, 28], [COLS.t3, 12]].forEach(([x, c]) => {
+      s += `<path d="M${COLS.op},76 C${COLS.op},${c} ${x},${c} ${x},72" fill="none" stroke="${RED}" stroke-width="2.6" marker-end="url(#s2m)"/>`;
+    });
+    s += T(COLS.t2, 16, '每一項都要變號', RED, 15);
+  }
+  /* 對齊的虛線 */
+  [COLS.t1, COLS.t2, COLS.t3].forEach(x => { s += `<line x1="${x}" y1="118" x2="${x}" y2="152" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="4 4"/>`; });
+  /* 第二列：去括號之後 */
+  s += T(COLS.open1, row2y, '=', '#334155', 30);
+  s += T(COLS.a, row2y, left[0], BLUE) + T(COLS.b, row2y, left[1], BLUE) + T(COLS.c, row2y, left[2], BLUE);
+  right2.forEach((t, i) => { s += T([COLS.t1, COLS.t2, COLS.t3][i], row2y, t, flip[i] ? RED : ORANGE); });
+  [COLS.t1, COLS.t2, COLS.t3].forEach((x, i) => { s += T(x, 214, flip[i] ? '變號' : '不變', flip[i] ? RED : '#64748b', 15); });
+  $id('s2-svg').innerHTML = `<svg class="no-katex" viewBox="0 0 520 224" width="100%" style="max-width:560px;display:block;margin:0 auto" role="img" aria-label="${minus ? '括號前是減號，去括號後第二個括號裡的三項都變號' : '括號前是加號，去括號後第二個括號裡的三項都不變'}">${s}</svg>`;
+  const lhs = `(${N1})${minus ? '-' : '+'}(${N2})`;
+  const rhs = minus ? `${cb('3x+2y-1')}${cr('-2x+5y-3')}` : `${cb('3x+2y-1')}${co('+2x-5y+3')}`;
+  const p = $id('s2-panel');
+  p.innerHTML = `<div class="text-sm mb-2 pb-2 border-b border-blue-200">示範 ${minus ? '②' : '①'}：去掉分子的括號</div><div>$${lhs}=${rhs}$</div>`;
+  typeset(p);
+}
+
+/* ========== 工具 4：進階，分母不同（通分） ========== */
+function initS4(){
+  $id('tool-s4').innerHTML = `<div class="space-y-3">${toggleBtns('s4', S.s4.minus)}
+    <div id="s4-panel" class="p-3 rounded-lg text-xs note-info"></div>
+    <div id="s4-ctl" class="flex flex-wrap items-center gap-2"></div></div>`;
+  RENDER.s4 = renderS4; renderS4();
+}
+function renderS4(){
+  const {minus, st} = S.s4, op = opOf(minus);
+  const A = 'x+2y', Bn = '2x-y';
+  const orig = `\\dfrac{${A}}{2}${op}\\dfrac{${Bn}}{3}`;
+  const m1 = cb('3'), m2 = co('2');
+  const prod = minus ? `${cb('3x+6y')}${co('-4x+2y')}` : `${cb('3x+6y')}${co('+4x-2y')}`;
+  const fin = minus ? `${cb('-x')}${co('+8y')}` : `${cb('7x')}${co('+4y')}`;
+  const rows = [
+    `${orig}&=\\dfrac{${m1}(${A})}{6}${op}\\dfrac{${m2}(${Bn})}{6}`,
+    `&=\\dfrac{${m1}(${A})${op}${m2}(${Bn})}{6}`,
+    `&=\\dfrac{${prod}}{6}`,
+    `&=\\dfrac{${fin}}{6}`
+  ];
+  const txt = [`分母是 $2$ 和 $3$，不一樣。按「下一步」，先通分。`,
+    `第 1 步：通分。$2$ 和 $3$ 的最小公倍數是 $6$：第一個分數的分子、分母都乘 $3$，第二個分數的分子、分母都乘 $2$。`,
+    `第 2 步：分母相同了，把分子放在同一條分數線上。`,
+    `第 3 步：用分配律去括號。`,
+    `第 4 步：合併同類項，分母 $6$ 不變。`][st];
+  const chain = st === 0 ? '' : `<div class="mt-2">$$\\begin{aligned}${rows.slice(0, st).join('\\\\')}\\end{aligned}$$</div>`;
+  const p = $id('s4-panel');
+  p.innerHTML = `<div class="text-sm mb-2 pb-2 border-b border-blue-200">示範 ${minus ? '②' : '①'}：$${orig}$</div><div class="text-sm">${txt}</div>${chain}`;
+  typeset(p);
+  $id('s4-ctl').innerHTML = ctlHTML('s4', 4);
+}
+
+/* ========== 小題 ========== */
+const QS = {
+  1:{stem:R`$\dfrac{a+2}{5}-\dfrac{3a-1}{5}$ 合併成一個分數，分子怎麼寫才對？`, correct:1, opts:[
+     {t:R`$\dfrac{a+2-3a-1}{5}$`, fb:R`減號要減掉「整個」第二個分子。沒有括號時，$-3a$ 只減到 $3a$，$-1$ 就沒有被減到了。用 $a=1$ 試試：原式是 $\dfrac{3}{5}-\dfrac{2}{5}=\dfrac{1}{5}$，但這個答案算出 $-\dfrac{1}{5}$。`},
+     {t:R`$\dfrac{(a+2)-(3a-1)}{5}$`, fb:R`對！分母 $5$ 不變，分子是「第一個分子減去整個第二個分子」，所以兩個分子都要加括號。`},
+     {t:R`$\dfrac{(a+2)+(3a-1)}{5}$`, fb:R`原式中間是減號，這裡寫成加號了。用 $a=1$ 試試：原式是 $\dfrac{1}{5}$，這個答案算出 $\dfrac{5}{5}=1$。`}]},
+  2:{stem:R`$-(4a-b+3)$ 去括號後是？`, correct:2, opts:[
+     {t:R`$-4a-b+3$`, fb:R`括號前是減號，括號裡的每一項都要變號，你只變了第一項。用 $a=1$、$b=2$ 試試：$-(4-2+3)=-5$，這個答案算出 $-3$。`},
+     {t:R`$-4a+b+3$`, fb:R`前面兩項都變號了，最後一項 $+3$ 呢？用 $a=1$、$b=2$ 試試：$-(4-2+3)=-5$，這個答案算出 $1$。`},
+     {t:R`$-4a+b-3$`, fb:R`對！減號讓每一項都變號：$4a\to-4a$，$-b\to+b$，$+3\to-3$。`}]},
+  3:{stem:R`$\dfrac{2x+3y-4}{5}-\dfrac{x-2y+1}{5}$ 化簡後是？`, correct:1, opts:[
+     {t:R`$\dfrac{x+y-3}{5}$`, fb:R`看看第二個分子 $x-2y+1$：減號要讓每一項都變號。你只有 $x$ 變號了，$-2y$ 要變成 $+2y$，$+1$ 要變成 $-1$。`},
+     {t:R`$\dfrac{x+5y-5}{5}$`, fb:R`對！先合併分子並加括號，去括號：$2x+3y-4-x+2y-1$。$x$ 項：$2x-x=x$；$y$ 項：$3y+2y=5y$；常數項：$-4-1=-5$。分母 $5$ 不變。`},
+     {t:R`$\dfrac{3x+y-3}{5}$`, fb:R`原式中間是減號，這個答案把它當成加號了：$2x+3y-4+x-2y+1=3x+y-3$。`}]},
+  '4a':{stem:R`$\dfrac{2x-y}{3}-\dfrac{x+3y}{4}$ 化簡後是？`, correct:2, opts:[
+     {t:R`$\dfrac{5x+5y}{12}$`, fb:R`通分之後分子是 $4(2x-y)-3(x+3y)$。$-3$ 要乘括號裡的每一項，$-3\times3y$ 是 $-9y$，不是 $+9y$。`},
+     {t:R`$\dfrac{x-4y}{12}$`, fb:R`通分時，分母乘了幾倍，分子也要乘同樣的倍數：第一個分數的分子、分母都乘 $4$，第二個都乘 $3$。你的分子沒有乘倍數。`},
+     {t:R`$\dfrac{5x-13y}{12}$`, fb:R`對！最小公倍數是 $12$：$\dfrac{4(2x-y)-3(x+3y)}{12}=\dfrac{8x-4y-3x-9y}{12}=\dfrac{5x-13y}{12}$。`}]},
+  '4b':{stem:R`$\dfrac{4x+y}{2}+\dfrac{x-4y}{5}$ 化簡後是？`, correct:1, opts:[
+     {t:R`$\dfrac{5x-3y}{7}$`, fb:R`分母不同，不能直接把分子相加，分母也不能直接相加。要先通分，讓兩個分數的分母相同。`},
+     {t:R`$\dfrac{22x-3y}{10}$`, fb:R`對！最小公倍數是 $10$：$\dfrac{5(4x+y)+2(x-4y)}{10}=\dfrac{20x+5y+2x-8y}{10}=\dfrac{22x-3y}{10}$。`},
+     {t:R`$\dfrac{22x+y}{10}$`, fb:R`$2(x-4y)$ 的 $2$ 要乘括號裡每一項，$-4y$ 也要乘 $2$，是 $-8y$。`}]}
+};
+function renderQ(n){
+  const q = QS[n], L = ['（A）','（B）','（C）'];
+  $id('q' + n).innerHTML = `<p class="text-sm mb-2">${q.stem}</p>
+    <div class="grid gap-2" id="c${n}">${q.opts.map((o,i) => `<button class="opt-btn" aria-label="選項${'ABC'[i]}" onclick="answer('${n}',${i},this)">${L[i]}${o.t}</button>`).join('')}</div>
+    <div class="fb" id="fb${n}"></div>`;
+  typeset($id('q' + n));
+}
+function answer(n, i, btn){
+  const q = QS[n], ok = (i === q.correct), fb = $id('fb' + n);
+  document.querySelectorAll(`#c${n} .opt-btn`).forEach(b => b.classList.remove('ok','bad'));
+  btn.classList.add(ok ? 'ok' : 'bad');
+  fb.className = 'fb show ' + (ok ? 'good' : 'warn');
+  fb.innerHTML = (ok ? '✅ ' : '🤔 ') + q.opts[i].fb; typeset(fb);
+  if(!ok){ return; }
+  if(String(n) === '4a'){ const w = $id('q4bWrap'); w.classList.remove('hidden'); typeset(w); return; }
+  const key = String(n) === '4b' ? '4' : String(n);
+  const sm = $id('sum' + key); sm.classList.remove('hidden'); typeset(sm);
+  $id('done' + key).classList.remove('hidden');
+}
+
+/* ========== 進度 ========== */
+const stepNames = ['','分子合併','去括號','完整化簡','進階：分母不同'];
+function completeStep(n){
+  $id('p' + n).className = 'pill done';
+  if(n < 4){
+    $id('p' + (n + 1)).className = 'pill active';
+    $id('progressStatus').textContent = `目前進行：步驟 ${n + 1}｜${stepNames[n + 1]}`;
+    const next = $id('step' + (n + 1)); next.classList.remove('hidden'); typeset(next);
+    setTimeout(() => next.scrollIntoView({behavior:'smooth', block:'start'}), 80);
+  } else {
+    $id('progressStatus').textContent = '四個步驟全部完成 ✓';
+    const m = $id('finalMsg'); m.classList.remove('hidden'); typeset(m);
+    m.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+}
+
+window.addEventListener('load', () => {
+  renderLinks();
+  initS1(); initS2(); initS4();
+  [1,2,3,'4a','4b'].forEach(renderQ);
+  typeset(document.body);
+});
+</script>
+</body>
+</html>
